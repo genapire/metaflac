@@ -131,8 +131,6 @@ function parseSeekTable(bytes: Uint8Array): SeekPoint[] {
   return table;
 }
 
-const RE_VORBIS_COMMENT_CONTENT_VECTOR = /^([^=]+)=(.+)$/;
-
 function parseVorbisComment(bytes: Uint8Array): VorbisComment {
   const textDecoder = new TextDecoder("utf-8");
   let offset = 0;
@@ -149,16 +147,16 @@ function parseVorbisComment(bytes: Uint8Array): VorbisComment {
       () => {
         const length = parseVorbisCommentLength(bytes, offset);
         offset += 4;
-        const text = textDecoder.decode(
-          bytes.subarray(offset, offset + length),
-        );
+
+        const commentContent = bytes.subarray(offset, offset + length);
         offset += length;
 
-        const matches = RE_VORBIS_COMMENT_CONTENT_VECTOR.exec(text);
-        if (!matches) {
-          throw new Error("Invalid Vorbis comment vector format.");
-        }
-        return { field: matches[1], value: matches[2] };
+        const separator = commentContent.indexOf(61); // "="
+        const field = textDecoder.decode(commentContent.subarray(0, separator));
+        const value = textDecoder.decode(
+          commentContent.subarray(separator + 1),
+        );
+        return { field, value };
       },
     );
 
