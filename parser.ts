@@ -167,8 +167,8 @@ function parseVorbisComment(bytes: Uint8Array): VorbisComment {
 }
 
 function parseVorbisCommentLength(bytes: Uint8Array, offset: number): number {
-  return bytes[offset] + bytes[offset + 1] + bytes[offset + 2] +
-    bytes[offset + 3];
+  return bytes[offset] + (bytes[offset + 1] << 8) + (bytes[offset + 2] << 16) +
+    (bytes[offset + 3] << 24);
 }
 
 function parsePicture(bytes: Uint8Array): Picture {
