@@ -1,4 +1,4 @@
-import { isFlacFile } from "./_shared.ts";
+import { assertFlacFile, FLAG_IS_LAST_BLOCK } from "./_shared.ts";
 import { BlockType, PictureType } from "./types.ts";
 import type {
   Metadata,
@@ -10,9 +10,7 @@ import type {
 } from "./types.ts";
 
 export function parse(bytes: Uint8Array): Metadata {
-  if (!isFlacFile(bytes)) {
-    throw new Error("Invalid FLAC file.");
-  }
+  assertFlacFile(bytes);
 
   let streamInfo: StreamInfo | undefined;
   let seekTable: SeekPoint[] | undefined;
@@ -66,7 +64,7 @@ interface BlockHeader {
 }
 
 function parseBlockHeader(bytes: Uint8Array): BlockHeader {
-  const isLastBlock = !!(bytes[0] & 0b10000000);
+  const isLastBlock = !!(bytes[0] & FLAG_IS_LAST_BLOCK);
 
   const blockTypeRaw = (bytes[0] & 0b01111111);
   const blockType: BlockType =

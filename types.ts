@@ -12,7 +12,7 @@ export enum BlockType {
 
 export interface Metadata {
   streamInfo: StreamInfo;
-  seekTable: SeekPoint[] | undefined;
+  seekTable: SeekTable | undefined;
   vorbisComment: VorbisComment | undefined;
   pictures: Picture[];
 }
@@ -28,6 +28,8 @@ export interface StreamInfo {
   totalSamples: number;
   signature: string;
 }
+
+export type SeekTable = SeekPoint[];
 
 export interface SeekPoint {
   sampleNumber: number;
