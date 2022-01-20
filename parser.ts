@@ -72,7 +72,7 @@ function parseBlockHeader(bytes: Uint8Array): BlockHeader {
       ? BlockType.Reserved
       : blockTypeRaw;
 
-  const blockSize = (bytes[1] << 16) + (bytes[2] << 8) + bytes[3];
+  const blockSize = parseNumber(bytes, 1, 3);
 
   return {
     isLastBlock,
@@ -82,10 +82,10 @@ function parseBlockHeader(bytes: Uint8Array): BlockHeader {
 }
 
 function parseStreamInfo(bytes: Uint8Array): StreamInfo {
-  const minBlockSize = (bytes[0] << 8) + bytes[1];
-  const maxBlockSize = (bytes[2] << 8) + bytes[3];
-  const minFrameSize = (bytes[4] << 16) + (bytes[5] << 8) + bytes[6];
-  const maxFrameSize = (bytes[7] << 16) + (bytes[8] << 8) + bytes[9];
+  const minBlockSize = parseNumber(bytes, 0, 2);
+  const maxBlockSize = parseNumber(bytes, 2, 2);
+  const minFrameSize = parseNumber(bytes, 4, 3);
+  const maxFrameSize = parseNumber(bytes, 7, 3);
   const sampleRate = (bytes[10] << 12) + (bytes[11] << 4) + (bytes[12] >> 4);
   const numberOfChannels = ((bytes[12] & 0b00001110) >> 1) + 1;
   const bitsPerSample = ((bytes[12] & 0b00000001) << 4) + (bytes[13] >> 4) + 1;
@@ -114,15 +114,9 @@ function parseSeekTable(bytes: Uint8Array): SeekPoint[] {
   for (let i = 0; i < bytes.length / 18; i += 1) {
     const start = i * 18;
     table.push({
-      sampleNumber: (bytes[start] << 56) + (bytes[start + 1] << 48) +
-        (bytes[start + 2] << 40) + (bytes[start + 3] << 32) +
-        (bytes[start + 4] << 24) + (bytes[start + 5] << 16) +
-        (bytes[start + 6] << 8) + bytes[start + 7],
-      offset: (bytes[start + 8] << 56) + (bytes[start + 9] << 48) +
-        (bytes[start + 10] << 40) + (bytes[start + 11] << 32) +
-        (bytes[start + 12] << 24) + (bytes[start + 13] << 16) +
-        (bytes[start + 14] << 8) + bytes[start + 15],
-      numberOfSamples: (bytes[start + 16] << 8) + bytes[start + 17],
+      sampleNumber: parseNumber(bytes, start, 8),
+      offset: parseNumber(bytes, start + 8, 8),
+      numberOfSamples: parseNumber(bytes, start + 16, 2),
     });
   }
 
@@ -174,36 +168,29 @@ function parsePicture(bytes: Uint8Array): Picture {
   const type: PictureType = bytes[3];
   let offset = 4;
 
-  const mimeLength = (bytes[offset] << 24) + (bytes[offset + 1] << 16) +
-    (bytes[offset + 2] << 8) + bytes[offset + 3];
+  const mimeLength = parseNumber(bytes, offset, 4);
   offset += 4;
   const mime = textDecoder.decode(bytes.subarray(offset, offset + mimeLength));
   offset += mimeLength;
 
-  const descriptionLength = (bytes[offset] << 24) + (bytes[offset + 1] << 16) +
-    (bytes[offset + 2] << 8) + bytes[offset + 3];
+  const descriptionLength = parseNumber(bytes, offset, 4);
   offset += 4;
   const description = textDecoder.decode(
     bytes.subarray(offset, offset + descriptionLength),
   );
   offset += descriptionLength;
 
-  const width = (bytes[offset] << 24) + (bytes[offset + 1] << 16) +
-    (bytes[offset + 2] << 8) + bytes[offset + 3];
+  const width = parseNumber(bytes, offset, 4);
   offset += 4;
-  const height = (bytes[offset] << 24) + (bytes[offset + 1] << 16) +
-    (bytes[offset + 2] << 8) + bytes[offset + 3];
+  const height = parseNumber(bytes, offset, 4);
   offset += 4;
 
-  const colorDepth = (bytes[offset] << 24) + (bytes[offset + 1] << 16) +
-    (bytes[offset + 2] << 8) + bytes[offset + 3];
+  const colorDepth = parseNumber(bytes, offset, 4);
   offset += 4;
-  const usedColors = (bytes[offset] << 24) + (bytes[offset + 1] << 16) +
-    (bytes[offset + 2] << 8) + bytes[offset + 3];
+  const usedColors = parseNumber(bytes, offset, 4);
   offset += 4;
 
-  const pictureLength = (bytes[offset] << 24) + (bytes[offset + 1] << 16) +
-    (bytes[offset + 2] << 8) + bytes[offset + 3];
+  const pictureLength = parseNumber(bytes, offset, 4);
   offset += 4;
   const picture = bytes.slice(offset, offset + pictureLength);
 
@@ -217,4 +204,15 @@ function parsePicture(bytes: Uint8Array): Picture {
     usedColors,
     picture,
   };
+}
+
+function parseNumber(
+  bytes: Uint8Array,
+  offset: number,
+  length: number,
+): number {
+  return bytes.subarray(offset, offset + length).reduce(
+    (total, current, i) => total + (current << ((length - 1 - i) * 8)),
+    0,
+  );
 }
