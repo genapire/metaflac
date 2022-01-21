@@ -13,6 +13,24 @@ export interface TagView {
   set date(value: string | undefined | null);
   get genre(): string | undefined;
   set genre(value: string | undefined | null);
+  get version(): string | undefined;
+  set version(value: string | undefined | null);
+  get performer(): string | undefined;
+  set performer(value: string | undefined | null);
+  get copyright(): string | undefined;
+  set copyright(value: string | undefined | null);
+  get license(): string | undefined;
+  set license(value: string | undefined | null);
+  get organization(): string | undefined;
+  set organization(value: string | undefined | null);
+  get description(): string | undefined;
+  set description(value: string | undefined | null);
+  get location(): string | undefined;
+  set location(value: string | undefined | null);
+  get contact(): string | undefined;
+  set contact(value: string | undefined | null);
+  get isrc(): string | undefined;
+  set isrc(value: string | undefined | null);
 }
 
 export function createTagView(metadata: Metadata): TagView {
@@ -56,6 +74,60 @@ export function createTagView(metadata: Metadata): TagView {
     },
     set genre(value) {
       setOrRemoveComment(vorbisComment, "GENRE", value);
+    },
+    get version() {
+      return queryCommentValue(vorbisComment, "VERSION");
+    },
+    set version(value) {
+      setOrRemoveComment(vorbisComment, "VERSION", value);
+    },
+    get performer() {
+      return queryCommentValue(vorbisComment, "PERFORMER");
+    },
+    set performer(value) {
+      setOrRemoveComment(vorbisComment, "PERFORMER", value);
+    },
+    get copyright() {
+      return queryCommentValue(vorbisComment, "COPYRIGHT");
+    },
+    set copyright(value) {
+      setOrRemoveComment(vorbisComment, "COPYRIGHT", value);
+    },
+    get license() {
+      return queryCommentValue(vorbisComment, "LICENSE");
+    },
+    set license(value) {
+      setOrRemoveComment(vorbisComment, "LICENSE", value);
+    },
+    get organization() {
+      return queryCommentValue(vorbisComment, "ORGANIZATION");
+    },
+    set organization(value) {
+      setOrRemoveComment(vorbisComment, "ORGANIZATION", value);
+    },
+    get description() {
+      return queryCommentValue(vorbisComment, "DESCRIPTION");
+    },
+    set description(value) {
+      setOrRemoveComment(vorbisComment, "DESCRIPTION", value);
+    },
+    get location() {
+      return queryCommentValue(vorbisComment, "LOCATION");
+    },
+    set location(value) {
+      setOrRemoveComment(vorbisComment, "LOCATION", value);
+    },
+    get contact() {
+      return queryCommentValue(vorbisComment, "CONTACT");
+    },
+    set contact(value) {
+      setOrRemoveComment(vorbisComment, "CONTACT", value);
+    },
+    get isrc() {
+      return queryCommentValue(vorbisComment, "ISRC");
+    },
+    set isrc(value) {
+      setOrRemoveComment(vorbisComment, "ISRC", value);
     },
   };
 }
