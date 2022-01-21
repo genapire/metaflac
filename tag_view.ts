@@ -1,4 +1,4 @@
-import { Metadata, VorbisComment } from "./types.ts";
+import type { Metadata, VorbisComment } from "./types.ts";
 
 export interface TagView {
   get title(): string | undefined;
