@@ -1,4 +1,4 @@
-import type { Metadata, VorbisComment } from "./types.ts";
+import type { Metadata, Picture, PictureType, VorbisComment } from "./types.ts";
 
 export interface TagView {
   get title(): string | undefined;
@@ -31,6 +31,9 @@ export interface TagView {
   set contact(value: string | undefined | null);
   get isrc(): string | undefined;
   set isrc(value: string | undefined | null);
+  findPicture(type: PictureType): Picture | undefined;
+  removePicture(type: PictureType): void;
+  removeAllPictures(): void;
 }
 
 export function createTagView(metadata: Metadata): TagView {
@@ -128,6 +131,17 @@ export function createTagView(metadata: Metadata): TagView {
     },
     set isrc(value) {
       setOrRemoveComment(vorbisComment, "ISRC", value);
+    },
+    findPicture(type) {
+      return metadata.pictures.find((picture) => picture.type === type);
+    },
+    removePicture(type) {
+      metadata.pictures = metadata.pictures.filter(
+        (picture) => picture.type !== type,
+      );
+    },
+    removeAllPictures() {
+      metadata.pictures = [];
     },
   };
 }
