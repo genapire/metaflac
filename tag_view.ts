@@ -1,4 +1,5 @@
 import type { Metadata, Picture, PictureType, VorbisComment } from "./types.ts";
+import { parsePictureMetadata } from "./_image.ts";
 
 export interface TagView {
   get title(): string | undefined;
@@ -32,6 +33,11 @@ export interface TagView {
   get isrc(): string | undefined;
   set isrc(value: string | undefined | null);
   findPicture(type: PictureType): Picture | undefined;
+  attachPicture(
+    options:
+      & Pick<Picture, "type" | "picture">
+      & Partial<Omit<Picture, "type" | "picture">>,
+  ): void;
   removePicture(type: PictureType): void;
   removeAllPictures(): void;
 }
@@ -134,6 +140,33 @@ export function createTagView(metadata: Metadata): TagView {
     },
     findPicture(type) {
       return metadata.pictures.find((picture) => picture.type === type);
+    },
+    attachPicture(options) {
+      let picture: Picture;
+      if (
+        !options.mime || !options.width || !options.height ||
+        !options.colorDepth || !options.usedColors
+      ) {
+        picture = {
+          ...parsePictureMetadata(options.picture),
+          ...options,
+          description: options.description ?? "",
+        };
+      } else {
+        picture = {
+          ...(options as Omit<Picture, "description">),
+          description: options.description ?? "",
+        };
+      }
+
+      const existing = metadata.pictures.find(({ type }) =>
+        type === options.type
+      );
+      if (existing) {
+        Object.assign(existing, picture);
+      } else {
+        metadata.pictures.push(picture);
+      }
     },
     removePicture(type) {
       metadata.pictures = metadata.pictures.filter(
