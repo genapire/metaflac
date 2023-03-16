@@ -1,4 +1,4 @@
-export const FLAG_IS_LAST_BLOCK = 0b10000000;
+export const FLAG_IS_LAST_BLOCK = 0b10000000
 
 export function assertFlacFile(file: Uint8Array) {
   if (
@@ -7,7 +7,7 @@ export function assertFlacFile(file: Uint8Array) {
     file[2] === 97 /* "a" */ &&
     file[3] === 67 /* "C" */
   ) {
-    return;
+    return
   }
-  throw new Error("Invalid FLAC file.");
+  throw new Error('Invalid FLAC file.')
 }

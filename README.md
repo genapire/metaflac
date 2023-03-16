@@ -1,4 +1,4 @@
-# 🎶 deno-metaflac
+# 🎶 @gplane/metaflac
 
 Library for processing metadata of [FLAC (Free Lossless Audio Codec)](https://xiph.org/flac/) files, which can be run on Deno, browsers and Node.js.
 
@@ -7,25 +7,22 @@ Library for processing metadata of [FLAC (Free Lossless Audio Codec)](https://xi
 ## 🫕 Usage
 
 ```ts
-import {
-  parse,
-  createTagView,
-  dump,
-} from "https://deno.land/x/metaflac/mod.ts";
+import * as fs from 'node:fs/promises'
+import { parse, createTagView, dump } from '@gplane/metaflac'
 
-const file = await Deno.readFile("./input.flac");
-const metadata = parse(file);
+const file = await fs.readFile('./input.flac')
+const metadata = parse(file)
 
-const tagView = createTagView(metadata);
+const tagView = createTagView(metadata)
 // reading tag data
-console.log(tagView.artist);
+console.log(tagView.artist)
 // writing tag data
-tagView.title = "xyz";
+tagView.title = 'xyz'
 // removing
-tagView.genre = null;
+tagView.genre = null
 
-const modifiedFile = dump(metadata, file);
-await Deno.writeFile("./output.flac", modifiedFile);
+const modifiedFile = dump(metadata, file)
+await fs.writeFile('./output.flac', modifiedFile)
 ```
 
 ## 📃 License

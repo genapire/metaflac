@@ -1,0 +1,7 @@
+{
+  "extends": "@gplane/tsconfig",
+  "compilerOptions": {
+    "module": "ESNext",
+    "noUncheckedIndexedAccess": false
+  }
+}
