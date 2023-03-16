@@ -19,6 +19,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc -p . --outDir dist/esm && tsc -p . --outDir dist/cjs --module commonjs",
+    "prepublishOnly": "pnpm build",
     "fmt": "prettier --write src"
   },
   "publishConfig": {
