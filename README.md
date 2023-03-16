@@ -1,8 +1,14 @@
-# 🎶 @gplane/metaflac
+# 🎶 metaflac
 
 Library for processing metadata of [FLAC (Free Lossless Audio Codec)](https://xiph.org/flac/) files, which can be run on Deno, browsers and Node.js.
 
 > Working in progress.
+
+## 💿 Installation
+
+```sh
+npm i @gplane/metaflac
+```
 
 ## 🫕 Usage
 
