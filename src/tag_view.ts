@@ -67,10 +67,14 @@ export function createTagView(metadata: Metadata): TagView {
       setOrRemoveComment(vorbisComment, 'ALBUM', value)
     },
     get albumArtist() {
-      return queryCommentValue(vorbisComment, 'ALBUMARTIST')
+      return (
+        queryCommentValue(vorbisComment, 'ALBUMARTIST') ??
+        queryCommentValue(vorbisComment, 'ALBUM ARTIST')
+      )
     },
     set albumArtist(value) {
       setOrRemoveComment(vorbisComment, 'ALBUMARTIST', value)
+      setOrRemoveComment(vorbisComment, 'ALBUM ARTIST', value)
     },
     get track() {
       const value = queryCommentValue(vorbisComment, 'TRACKNUMBER')
@@ -205,7 +209,7 @@ type StandardFields =
   | 'LOCATION'
   | 'CONTACT'
   | 'ISRC'
-type ExtensionFields = 'ALBUMARTIST'
+type ExtensionFields = 'ALBUMARTIST' | 'ALBUM ARTIST'
 type FieldNames = StandardFields | ExtensionFields
 
 function queryCommentValue(
