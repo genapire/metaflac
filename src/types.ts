@@ -12,8 +12,10 @@ export enum BlockType {
 
 export interface Metadata {
   streamInfo: StreamInfo
+  application: Uint8Array | undefined
   seekTable: Uint8Array | undefined
   vorbisComment: VorbisComment | undefined
+  cueSheet: Uint8Array | undefined
   pictures: Picture[]
 }
 

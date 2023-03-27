@@ -11,6 +11,12 @@ export function dump(metadata: Metadata, file: Uint8Array): Uint8Array {
     type: BlockType.Streaminfo,
     bytes: dumpStreamInfo(metadata.streamInfo),
   })
+  if (metadata.application) {
+    blocks.push({
+      type: BlockType.Application,
+      bytes: metadata.application,
+    })
+  }
   if (metadata.seekTable) {
     blocks.push({
       type: BlockType.Seektable,
@@ -21,6 +27,12 @@ export function dump(metadata: Metadata, file: Uint8Array): Uint8Array {
     blocks.push({
       type: BlockType.VorbisComment,
       bytes: dumpVorbisComment(metadata.vorbisComment),
+    })
+  }
+  if (metadata.cueSheet) {
+    blocks.push({
+      type: BlockType.Cuesheet,
+      bytes: metadata.cueSheet,
     })
   }
   metadata.pictures.forEach((picture) => {

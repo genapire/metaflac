@@ -12,8 +12,10 @@ export function parse(bytes: Uint8Array): Metadata {
   assertFlacFile(bytes)
 
   let streamInfo: StreamInfo | undefined
+  let application: Uint8Array | undefined
   let seekTable: Uint8Array | undefined
   let vorbisComment: VorbisComment | undefined
+  let cueSheet: Uint8Array | undefined
   const pictures: Picture[] = []
 
   let offset = 4
@@ -30,11 +32,17 @@ export function parse(bytes: Uint8Array): Metadata {
         break
       case BlockType.Padding:
         break
+      case BlockType.Application:
+        application = block
+        break
       case BlockType.Seektable:
         seekTable = block
         break
       case BlockType.VorbisComment:
         vorbisComment = parseVorbisComment(block)
+        break
+      case BlockType.Cuesheet:
+        cueSheet = block
         break
       case BlockType.Picture:
         pictures.push(parsePicture(block))
@@ -50,8 +58,10 @@ export function parse(bytes: Uint8Array): Metadata {
 
   return {
     streamInfo,
+    application,
     seekTable,
     vorbisComment,
+    cueSheet,
     pictures,
   }
 }
