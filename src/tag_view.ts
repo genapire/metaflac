@@ -8,6 +8,8 @@ export interface TagView {
   set artist(value: string | undefined | null)
   get album(): string | undefined
   set album(value: string | undefined | null)
+  get albumArtist(): string | undefined
+  set albumArtist(value: string | undefined | null)
   get track(): number | undefined
   set track(value: number | undefined | null)
   get date(): string | undefined
@@ -63,6 +65,12 @@ export function createTagView(metadata: Metadata): TagView {
     },
     set album(value) {
       setOrRemoveComment(vorbisComment, 'ALBUM', value)
+    },
+    get albumArtist() {
+      return queryCommentValue(vorbisComment, 'ALBUMARTIST')
+    },
+    set albumArtist(value) {
+      setOrRemoveComment(vorbisComment, 'ALBUMARTIST', value)
     },
     get track() {
       const value = queryCommentValue(vorbisComment, 'TRACKNUMBER')
@@ -181,28 +189,28 @@ export function createTagView(metadata: Metadata): TagView {
   }
 }
 
-const standardFieldNames = [
-  'TITLE',
-  'VERSION',
-  'ALBUM',
-  'TRACKNUMBER',
-  'ARTIST',
-  'PERFORMER',
-  'COPYRIGHT',
-  'LICENSE',
-  'ORGANIZATION',
-  'DESCRIPTION',
-  'GENRE',
-  'DATE',
-  'LOCATION',
-  'CONTACT',
-  'ISRC',
-] as const
-type StandardFields = (typeof standardFieldNames)[number]
+type StandardFields =
+  | 'TITLE'
+  | 'VERSION'
+  | 'ALBUM'
+  | 'TRACKNUMBER'
+  | 'ARTIST'
+  | 'PERFORMER'
+  | 'COPYRIGHT'
+  | 'LICENSE'
+  | 'ORGANIZATION'
+  | 'DESCRIPTION'
+  | 'GENRE'
+  | 'DATE'
+  | 'LOCATION'
+  | 'CONTACT'
+  | 'ISRC'
+type ExtensionFields = 'ALBUMARTIST'
+type FieldNames = StandardFields | ExtensionFields
 
 function queryCommentValue(
   vorbisComment: VorbisComment,
-  field: StandardFields
+  field: FieldNames
 ): string | undefined {
   return vorbisComment.comments.find(
     (comment) => comment.field.toUpperCase() === field
@@ -211,7 +219,7 @@ function queryCommentValue(
 
 function setOrRemoveComment(
   vorbisComment: VorbisComment,
-  field: StandardFields,
+  field: FieldNames,
   value: string | undefined | null
 ) {
   if (value == null) {
