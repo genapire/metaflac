@@ -226,8 +226,7 @@ function setOrRemoveComment(
   )
   if (comment) {
     comment.value = value
-    return
+  } else {
+    vorbisComment.comments.push({ field, value })
   }
-
-  vorbisComment.comments.push({ field, value })
 }
