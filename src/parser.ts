@@ -20,7 +20,7 @@ export function parse(bytes: Uint8Array): Metadata {
 
   let offset = 4
   let isLastBlock = false
-  while (!isLastBlock) {
+  while (!isLastBlock && offset < bytes.length) {
     const header = parseBlockHeader(bytes.subarray(offset))
     isLastBlock = header.isLastBlock
     offset += 4
