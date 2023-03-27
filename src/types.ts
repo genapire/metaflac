@@ -12,7 +12,7 @@ export enum BlockType {
 
 export interface Metadata {
   streamInfo: StreamInfo
-  seekTable: SeekTable | undefined
+  seekTable: Uint8Array | undefined
   vorbisComment: VorbisComment | undefined
   pictures: Picture[]
 }
@@ -27,14 +27,6 @@ export interface StreamInfo {
   bitsPerSample: number
   totalSamples: number
   signature: string
-}
-
-export type SeekTable = SeekPoint[]
-
-export interface SeekPoint {
-  sampleNumber: number
-  offset: number
-  numberOfSamples: number
 }
 
 export interface VorbisComment {

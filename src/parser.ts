@@ -3,7 +3,6 @@ import { BlockType, PictureType } from './types.js'
 import type {
   Metadata,
   Picture,
-  SeekPoint,
   StreamInfo,
   VorbisComment,
   VorbisCommentContent,
@@ -13,7 +12,7 @@ export function parse(bytes: Uint8Array): Metadata {
   assertFlacFile(bytes)
 
   let streamInfo: StreamInfo | undefined
-  let seekTable: SeekPoint[] | undefined
+  let seekTable: Uint8Array | undefined
   let vorbisComment: VorbisComment | undefined
   const pictures: Picture[] = []
 
@@ -32,7 +31,7 @@ export function parse(bytes: Uint8Array): Metadata {
       case BlockType.Padding:
         break
       case BlockType.Seektable:
-        seekTable = parseSeekTable(block)
+        seekTable = block
         break
       case BlockType.VorbisComment:
         vorbisComment = parseVorbisComment(block)
@@ -110,20 +109,6 @@ function parseStreamInfo(bytes: Uint8Array): StreamInfo {
     totalSamples,
     signature,
   }
-}
-
-function parseSeekTable(bytes: Uint8Array): SeekPoint[] {
-  const table: SeekPoint[] = []
-  for (let i = 0; i < bytes.length / 18; i += 1) {
-    const start = i * 18
-    table.push({
-      sampleNumber: parseNumber(bytes, start, 8),
-      offset: parseNumber(bytes, start + 8, 8),
-      numberOfSamples: parseNumber(bytes, start + 16, 2),
-    })
-  }
-
-  return table
 }
 
 function parseVorbisComment(bytes: Uint8Array): VorbisComment {

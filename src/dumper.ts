@@ -1,11 +1,5 @@
 import { BlockType } from './types.js'
-import type {
-  Metadata,
-  Picture,
-  SeekTable,
-  StreamInfo,
-  VorbisComment,
-} from './types.js'
+import type { Metadata, Picture, StreamInfo, VorbisComment } from './types.js'
 import { assertFlacFile, FLAG_IS_LAST_BLOCK } from './shared.js'
 
 export function dump(metadata: Metadata, file: Uint8Array): Uint8Array {
@@ -20,7 +14,7 @@ export function dump(metadata: Metadata, file: Uint8Array): Uint8Array {
   if (metadata.seekTable) {
     blocks.push({
       type: BlockType.Seektable,
-      bytes: dumpSeekTable(metadata.seekTable),
+      bytes: metadata.seekTable,
     })
   }
   if (metadata.vorbisComment) {
@@ -81,18 +75,6 @@ function dumpStreamInfo(streamInfo: StreamInfo): Uint8Array {
       streamInfo.totalSamples
     ),
     md5
-  )
-}
-
-function dumpSeekTable(seekTable: SeekTable): Uint8Array {
-  return concat(
-    ...seekTable.map((point) =>
-      concat(
-        dumpNumber(point.sampleNumber, 8),
-        dumpNumber(point.offset, 8),
-        dumpNumber(point.numberOfSamples, 2)
-      )
-    )
   )
 }
 
