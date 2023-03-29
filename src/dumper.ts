@@ -2,7 +2,16 @@ import { BlockType } from './types.js'
 import type { Metadata, Picture, StreamInfo, VorbisComment } from './types.js'
 import { assertFlacFile, FLAG_IS_LAST_BLOCK } from './shared.js'
 
-export function dump(metadata: Metadata, file: Uint8Array): Uint8Array {
+export interface DumperOptions {
+  /** Add specific size of padding after all metadata blocks. */
+  trailingPadding?: number
+}
+
+export function dump(
+  metadata: Metadata,
+  file: Uint8Array,
+  options: DumperOptions = {}
+): Uint8Array {
   assertFlacFile(file)
 
   type Block = { type: BlockType; bytes: Uint8Array }
@@ -41,6 +50,12 @@ export function dump(metadata: Metadata, file: Uint8Array): Uint8Array {
       bytes: dumpPicture(picture),
     })
   })
+  if (options.trailingPadding) {
+    blocks.push({
+      type: BlockType.Padding,
+      bytes: new Uint8Array(options.trailingPadding),
+    })
+  }
 
   return concat(
     Uint8Array.of(102, 76, 97, 67), // "fLaC"
