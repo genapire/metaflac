@@ -76,7 +76,7 @@ function dumpStreamInfo(streamInfo: StreamInfo): Uint8Array {
     Uint8Array.of(
       streamInfo.sampleRate >> 12,
       streamInfo.sampleRate >> 4,
-      (streamInfo.sampleRate & (0b1111 << 4)) +
+      (streamInfo.sampleRate & 0b1111) +
         ((streamInfo.numberOfChannels - 1) << 1) +
         ((streamInfo.bitsPerSample - 1) >> 4),
       ((streamInfo.bitsPerSample - 1) << 4) +
