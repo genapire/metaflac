@@ -16,6 +16,9 @@ npm i @gplane/metaflac
 import * as fs from 'node:fs/promises'
 import { parse, createTagView, dump } from '@gplane/metaflac'
 
+// browsers
+const file = await blob.arrayBuffer()
+// Node.js
 const file = await fs.readFile('./input.flac')
 const metadata = parse(file)
 
@@ -28,6 +31,9 @@ tagView.title = 'xyz'
 tagView.genre = null
 
 const modifiedFile = dump(metadata, file)
+// browsers
+new Blob([modifiedFile])
+// Node.js
 await fs.writeFile('./output.flac', modifiedFile)
 ```
 
