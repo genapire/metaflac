@@ -1,8 +1,8 @@
 {
   "extends": "@gplane/tsconfig",
   "compilerOptions": {
-    "module": "ESNext",
-    "noUncheckedIndexedAccess": false
+    "noUncheckedIndexedAccess": false,
+    "outDir": "dist"
   },
   "include": ["src"]
 }

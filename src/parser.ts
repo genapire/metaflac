@@ -1,5 +1,5 @@
 import { assertFlacFile, FLAG_IS_LAST_BLOCK } from './shared.js'
-import { BlockType, PictureType } from './types.js'
+import { BlockType, type PictureType } from './types.js'
 import type {
   Metadata,
   Picture,
