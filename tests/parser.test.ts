@@ -40,41 +40,45 @@ test('vorbis comment', async () => {
   const vorbisComment = parse(file).vorbisComment!
   expect(vorbisComment.vendor).toBe('reference libFLAC 1.4.2 20221022')
   expect(vorbisComment.comments).toHaveLength(7)
-  expect(vorbisComment.comments.find(({ field }) => field === 'TITLE')).toEqual(
-    {
-      field: 'TITLE',
-      value: '町かどタンジェント',
-    }
-  )
+  expect(
+    vorbisComment.comments.find(({ field }) => field === 'TITLE')
+  ).toStrictEqual({
+    field: 'TITLE',
+    value: '町かどタンジェント',
+  })
   expect(
     vorbisComment.comments.find(({ field }) => field === 'ARTIST')
-  ).toEqual({
+  ).toStrictEqual({
     field: 'ARTIST',
     value: 'shami momo (小原好美, 鬼頭明里)',
   })
-  expect(vorbisComment.comments.find(({ field }) => field === 'ALBUM')).toEqual(
-    {
-      field: 'ALBUM',
-      value: '町かどタンジェント / よいまちカンターレ',
-    }
-  )
+  expect(
+    vorbisComment.comments.find(({ field }) => field === 'ALBUM')
+  ).toStrictEqual({
+    field: 'ALBUM',
+    value: '町かどタンジェント / よいまちカンターレ',
+  })
   expect(
     vorbisComment.comments.find(({ field }) => field === 'ALBUMARTIST')
-  ).toEqual({
+  ).toStrictEqual({
     field: 'ALBUMARTIST',
     value: 'shami momo (小原好美, 鬼頭明里)',
   })
   expect(
     vorbisComment.comments.find(({ field }) => field === 'TRACKNUMBER')
-  ).toEqual({
+  ).toStrictEqual({
     field: 'TRACKNUMBER',
     value: '1',
   })
-  expect(vorbisComment.comments.find(({ field }) => field === 'ISRC')).toEqual({
+  expect(
+    vorbisComment.comments.find(({ field }) => field === 'ISRC')
+  ).toStrictEqual({
     field: 'ISRC',
     value: 'JPPC01901215',
   })
-  expect(vorbisComment.comments.find(({ field }) => field === 'DATE')).toEqual({
+  expect(
+    vorbisComment.comments.find(({ field }) => field === 'DATE')
+  ).toStrictEqual({
     field: 'DATE',
     value: '2019',
   })
@@ -93,7 +97,7 @@ test('pictures', async () => {
   expect(frontCover.height).toBe(1)
   expect(frontCover.colorDepth).toBe(24)
   expect(frontCover.usedColors).toBe(0)
-  expect(frontCover.picture).toEqual(
+  expect(frontCover.picture).toStrictEqual(
     await fs.readFile('tests/fixtures/picture.png')
   )
 
@@ -105,7 +109,7 @@ test('pictures', async () => {
   expect(backCover.height).toBe(1)
   expect(backCover.colorDepth).toBe(24)
   expect(backCover.usedColors).toBe(0)
-  expect(backCover.picture).toEqual(
+  expect(backCover.picture).toStrictEqual(
     await fs.readFile('tests/fixtures/picture.jpg')
   )
 })

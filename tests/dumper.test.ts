@@ -78,7 +78,7 @@ test('dump metadata with padding', async () => {
     await fs.readFile('tests/fixtures/no_metadata.flac'),
     { trailingPadding: 7113 }
   )
-  expect(file).toEqual(
+  expect(file).toStrictEqual(
     new Uint8Array(await fs.readFile('tests/fixtures/fixture.flac'))
   )
 })
