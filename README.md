@@ -2,8 +2,6 @@
 
 Library for processing metadata of [FLAC (Free Lossless Audio Codec)](https://xiph.org/flac/) files, which can be run on Deno, browsers and Node.js.
 
-> Working in progress.
-
 ## 💿 Installation
 
 ```sh
