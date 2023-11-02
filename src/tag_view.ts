@@ -1,5 +1,5 @@
-import type { Metadata, Picture, PictureType, VorbisComment } from './types.js'
 import { parsePictureMetadata } from './image.js'
+import type { Metadata, Picture, PictureType, VorbisComment } from './types.js'
 
 export interface TagView {
   get title(): string | undefined
@@ -36,8 +36,9 @@ export interface TagView {
   set isrc(value: string | undefined | null)
   findPicture(type: PictureType): Picture | undefined
   attachPicture(
-    options: Pick<Picture, 'type' | 'picture'> &
-      Partial<Omit<Picture, 'type' | 'picture'>>
+    options:
+      & Pick<Picture, 'type' | 'picture'>
+      & Partial<Omit<Picture, 'type' | 'picture'>>,
   ): void
   removePicture(type: PictureType): void
   removeAllPictures(): void
@@ -69,7 +70,7 @@ export function createTagView(metadata: Metadata): TagView {
     get albumArtist() {
       return (
         queryCommentValue(vorbisComment, 'ALBUMARTIST') ??
-        queryCommentValue(vorbisComment, 'ALBUM ARTIST')
+          queryCommentValue(vorbisComment, 'ALBUM ARTIST')
       )
     },
     set albumArtist(value) {
@@ -214,7 +215,7 @@ type FieldNames = StandardFields | ExtensionFields
 
 function queryCommentValue(
   vorbisComment: VorbisComment,
-  field: FieldNames
+  field: FieldNames,
 ): string | undefined {
   return vorbisComment.comments.find(
     (comment) => comment.field.toUpperCase() === field
@@ -224,7 +225,7 @@ function queryCommentValue(
 function setOrRemoveComment(
   vorbisComment: VorbisComment,
   field: FieldNames,
-  value: string | undefined | null
+  value: string | undefined | null,
 ) {
   if (value == null) {
     vorbisComment.comments = vorbisComment.comments.filter(

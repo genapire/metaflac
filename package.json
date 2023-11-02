@@ -19,8 +19,8 @@
   "scripts": {
     "build": "tsc -p .",
     "prepublishOnly": "pnpm build",
-    "fmt": "prettier --write src tests",
-    "fmt:check": "prettier --check src tests",
+    "fmt": "dprint fmt",
+    "fmt:check": "dprint check",
     "test": "vitest"
   },
   "publishConfig": {
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@gplane/tsconfig": "^6.0.0",
-    "prettier": "^2.8.4",
+    "dprint": "^0.42.5",
     "typescript": "^5.0.4",
     "vite": "^4.2.1",
     "vitest": "^0.29.7"

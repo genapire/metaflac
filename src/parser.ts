@@ -1,4 +1,4 @@
-import { assertFlacFile, FLAG_IS_LAST_BLOCK } from './shared.js'
+import { FLAG_IS_LAST_BLOCK, assertFlacFile } from './shared.js'
 import { BlockType, type PictureType } from './types.js'
 import type {
   Metadata,
@@ -98,8 +98,7 @@ function parseStreamInfo(bytes: Uint8Array): StreamInfo {
   const sampleRate = (bytes[10] << 12) + (bytes[11] << 4) + (bytes[12] >> 4)
   const numberOfChannels = ((bytes[12] & 0b00001110) >> 1) + 1
   const bitsPerSample = ((bytes[12] & 0b00000001) << 4) + (bytes[13] >> 4) + 1
-  const totalSamples =
-    ((bytes[13] & 0b00001111) << 32) +
+  const totalSamples = ((bytes[13] & 0b00001111) << 32) +
     (bytes[14] << 24) +
     (bytes[15] << 16) +
     (bytes[16] << 8) +
@@ -207,7 +206,7 @@ function parsePicture(bytes: Uint8Array): Picture {
 function parseNumber(
   bytes: Uint8Array,
   offset: number,
-  length: number
+  length: number,
 ): number {
   return bytes
     .subarray(offset, offset + length)

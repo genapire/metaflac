@@ -1,6 +1,6 @@
+import { FLAG_IS_LAST_BLOCK, assertFlacFile } from './shared.js'
 import { BlockType } from './types.js'
 import type { Metadata, Picture, StreamInfo, VorbisComment } from './types.js'
-import { assertFlacFile, FLAG_IS_LAST_BLOCK } from './shared.js'
 
 export interface DumperOptions {
   /** Add specific size of padding after all metadata blocks. */
@@ -10,11 +10,11 @@ export interface DumperOptions {
 export function dump(
   metadata: Metadata,
   file: Uint8Array,
-  options: DumperOptions = {}
+  options: DumperOptions = {},
 ): Uint8Array {
   assertFlacFile(file)
 
-  type Block = { type: BlockType; bytes: Uint8Array }
+  type Block = { type: BlockType, bytes: Uint8Array }
   const blocks: Block[] = []
   blocks.push({
     type: BlockType.Streaminfo,
@@ -69,7 +69,7 @@ export function dump(
 function dumpBlock(
   isLastBlock: boolean,
   type: BlockType,
-  data: Uint8Array
+  data: Uint8Array,
 ): Uint8Array {
   const header = (isLastBlock ? FLAG_IS_LAST_BLOCK : 0) + type
   const blockSize = data.length
@@ -160,8 +160,7 @@ function skipMetadata(bytes: Uint8Array): number {
   let isLastBlock = false
   while (!isLastBlock) {
     isLastBlock = !!(bytes[offset] & FLAG_IS_LAST_BLOCK)
-    offset +=
-      4 +
+    offset += 4 +
       (bytes[offset + 1] << 16) +
       (bytes[offset + 2] << 8) +
       bytes[offset + 3]

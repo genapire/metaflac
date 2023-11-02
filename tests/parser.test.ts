@@ -1,6 +1,6 @@
 import * as fs from 'node:fs/promises'
 import { expect, test } from 'vitest'
-import { parse, PictureType } from '../src'
+import { PictureType, parse } from '../src'
 
 test('throw on non-FLAC file', () => {
   expect(() => {

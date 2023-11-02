@@ -1,6 +1,6 @@
 import * as fs from 'node:fs/promises'
 import { expect, test } from 'vitest'
-import { dump, type Metadata, PictureType } from '../src'
+import { type Metadata, PictureType, dump } from '../src'
 
 test('dump metadata with padding', async () => {
   const metadata: Metadata = {
