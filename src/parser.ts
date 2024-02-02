@@ -1,12 +1,6 @@
 import { FLAG_IS_LAST_BLOCK, assertFlacFile } from './shared.js'
 import { BlockType, type PictureType } from './types.js'
-import type {
-  Metadata,
-  Picture,
-  StreamInfo,
-  VorbisComment,
-  VorbisCommentContent,
-} from './types.js'
+import type { Metadata, Picture, StreamInfo, VorbisComment, VorbisCommentContent } from './types.js'
 
 export function parse(bytes: Uint8Array): Metadata {
   assertFlacFile(bytes)
