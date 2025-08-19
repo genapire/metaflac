@@ -5,14 +5,14 @@ Library for processing metadata of [FLAC (Free Lossless Audio Codec)](https://xi
 ## 💿 Installation
 
 ```sh
-npm i @gplane/metaflac
+npm i @genapire/metaflac
 ```
 
 ## 🫕 Usage
 
 ```ts
 import * as fs from 'node:fs/promises'
-import { parse, createTagView, dump } from '@gplane/metaflac'
+import { parse, createTagView, dump } from '@genapire/metaflac'
 
 // browsers
 const file = await blob.arrayBuffer()
@@ -40,3 +40,4 @@ await fs.writeFile('./output.flac', modifiedFile)
 MIT License
 
 Copyright (c) 2021-present Pig Fang
+Copyright (c) 2025-present genapire

@@ -1,8 +1,8 @@
 {
-  "name": "@gplane/metaflac",
+  "name": "@genapire/metaflac",
   "description": "Library for processing metadata of FLAC files.",
   "author": "Pig Fang <g-plane@hotmail.com>",
-  "repository": "g-plane/metaflac",
+  "repository": "genapire/metaflac",
   "version": "0.0.0",
   "license": "MIT",
   "files": [
