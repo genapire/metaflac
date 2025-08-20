@@ -19,8 +19,6 @@
   "scripts": {
     "build": "tsc -p .",
     "prepublishOnly": "pnpm build",
-    "fmt": "dprint fmt",
-    "fmt:check": "dprint check",
     "test": "vitest"
   },
   "publishConfig": {
@@ -28,7 +26,6 @@
   },
   "devDependencies": {
     "@gplane/tsconfig": "^6.2.0",
-    "dprint": "^0.50.1",
     "typescript": "^5.9.2",
     "vite": "^7.1.3",
     "vitest": "^3.2.4"
